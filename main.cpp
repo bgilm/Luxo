@@ -19,13 +19,20 @@
 #include "cCylinder.h"
 #include "cCone.h"
 
+
 int width, height;
 float deltaX, deltaY;
 GLdouble fovy;
 
-Sphere* sph0;
-Cylinder* c0;
+Sphere* foco;
+Cylinder* base;
+Cylinder* pole;
+Cylinder* pole1;
+Cylinder* pole2;
+Cylinder* pole3;
+Cylinder* pole4;
 Cone* cone;
+
 
 
 void display( void )
@@ -35,9 +42,14 @@ void display( void )
 	glRotatef( deltaY, 1.0, 0.0, 0.0 );
 	glRotatef( deltaX, 0.0, 1.0, 0.0 );
 
-	sph0->draw();
-    c0->draw();
+	foco->draw();
+    base->draw();
     cone->draw();
+    pole->draw();
+    pole1->draw();
+    pole2->draw();
+    pole3->draw();
+    pole4->draw();
 
 	glutSwapBuffers();
 }
@@ -55,18 +67,49 @@ void init( void )
 	glShadeModel( GL_FLAT );
 	glClearColor( 0.0, 0.0, 0.0, 1.0 );
 
-	float pos0[]  = { 0.0f,  0.0f, 0.0f };
-	float size0[] = { 2.0f,  2.0f, 2.0f };
+	float posCono[]  = { 0.0f,  2.5f, 0.0f };
+	float sizeFoco[] = { 1.0f,  1.0f, 1.0f };
 
-	float pos1[]  = { -3.0f, 0.0f, 0.0f };
-	float size1[] = { 2.0f,  2.0f, 2.0f };
+	float posBase[]  = { 0.0f, -2.0f, 0.0f };
+	float sizeBase[] = { 2.0f,  0.5f, 2.0f };
 
-	float pos2[]  = { 3.0f,  0.0f, 0.0f };
-	float size2[] = { 2.0f,  2.0f, 2.0f };
-
-	sph0 = new Sphere( pos0, size0 );
-    c0 = new Cylinder( pos1, size1 );
-    cone = new Cone(pos2,size2);
+	//float pos2[]  = { 3.0f,  0.0f, 0.0f };
+	float sizeCono[] = { 2.0f,  2.0f, 2.0f };
+    
+    float sizePole0[] = { 0.5f,  3.0f, 0.5f };
+    
+    float posFoco[] = {posCono[0],static_cast<float>(posCono[1]-.25),posCono[2]};
+    
+    float posPole0[]  = { posBase[0], static_cast<float>(posBase[1]+0.75), posBase[2] };
+    
+    float sizePole1[] = {sizePole0[0]/2,sizePole0[1],sizePole0[2]/2};
+    float posPole1[]  = { posPole0[0]+0.35f, posPole0[1]+1.25f, posBase[2] };
+    
+    float posPole2[]  = { posPole0[0]-0.35f, posPole0[1]+1.25f, posBase[2] };
+    
+    float posPole3[]  = { posPole0[0], posPole0[1]+2.25f, posBase[2] };
+    float posPole4[]  = { posPole0[0], posPole0[1]+2.75f, posBase[2] };
+    
+    float sizePole3[] = {0.5f,1.25,0.5f};
+    
+    
+    
+   
+    
+    
+    
+  
+    
+	
+    base = new Cylinder( posBase, sizeBase );
+    
+    cone = new Cone(posCono,sizeCono);
+    foco = new Sphere( posFoco, sizeFoco );
+    pole = new Cylinder(posPole0,sizePole0);
+    pole1 = new Cylinder(posPole1,sizePole1);
+    pole2 = new Cylinder(posPole2,sizePole1);
+    pole3 = new Cylinder(posPole3,sizePole3);
+    pole4 = new Cylinder(posPole4,sizePole3);
 	
 }
 
@@ -98,8 +141,8 @@ void keys( unsigned char key, int x, int y )
 		glClearColor( 0.0, 0.0, 0.0, 1.0 );
 		break;
 	case 27:
-		delete sph0;
-        delete c0;
+		delete foco;
+        delete base;
 		
 	default:
 		break;
@@ -156,7 +199,7 @@ int main( int argc, char** argv )
 {
 	glutInit( &argc, argv );
 	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
-	glutInitWindowSize( 512, 512 ); 
+	glutInitWindowSize( 1024, 2048 );
 	glutInitWindowPosition( 600, 100 );
 	glutCreateWindow( "Sphere with Vertex Arrays" );
 
